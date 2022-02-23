@@ -1,0 +1,91 @@
+version: '3.1'
+
+services:
+  zookeeper:
+    image: zookeeper
+    container_name: zookeeper
+    restart: always
+
+#  frontier:
+#    image: crawlercommons/url-frontier
+#    container_name: frontier
+#    command: rocksdb.path=/crawldir/rocksdb
+#    ports:
+#      - 7071:7071
+#    volumes:
+#      - data01:/crawldir
+
+#  prometheus:
+#    image: prom/prometheus 
+#    container_name: prometheus
+#    ports:
+#      - 127.0.0.1:9090:9090
+
+#  grafana:
+#    image: grafana/grafana
+#    container_name: grafana
+#    ports:
+#      - 3000:3000
+
+#  elastic:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+#    container_name: elastic
+#    environment:
+#      - node.name=elastic
+#      - discovery.type=single-node
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#      - TAKE_FILE_OWNERSHIP=true
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    ports:
+#      - 9200:9200
+#    volumes:
+#      - data02:/usr/share/elasticsearch/data
+
+  nimbus:
+    image: storm
+    container_name: nimbus
+    command: storm nimbus
+    depends_on:
+      - zookeeper
+    restart: always
+
+  supervisor:
+    image: storm
+    container_name: supervisor
+    command: storm supervisor -c worker.childopts=-Xmx%HEAP-MEM%m
+    depends_on:
+      - nimbus
+      - zookeeper
+    restart: always
+
+  ui:
+    image: storm
+    container_name: ui
+    command: storm ui
+    depends_on:
+      - nimbus
+    restart: always
+    ports:
+      - 8080:8080
+
+  logviewer:
+    image: storm
+    container_name: logviewer
+    command: storm logviewer
+    depends_on:
+      - nimbus
+      - supervisor
+    restart: always
+    ports:
+      - 8000:8000
+
+volumes:
+  data01:
+    driver: local
+  data02:
+    driver: local
+
