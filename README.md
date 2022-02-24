@@ -11,4 +11,4 @@ To start the services, run `docker-compose up -d`.
 TODO 
 
 Steps to generate a topology from the archetypes
-Launch a topology + run it on the cluster
+Launch a topology via Flux + run it on the cluster

@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   zookeeper:
-    image: zookeeper
+    image: zookeeper:3.7.0
     container_name: zookeeper
     restart: always
 
@@ -11,7 +11,7 @@ services:
 #    container_name: frontier
 #    command: rocksdb.path=/crawldir/rocksdb
 #    ports:
-#      - 7071:7071
+#      - "127.0.0.1:7071:7071"
 #    volumes:
 #      - data01:/crawldir
 
@@ -19,13 +19,13 @@ services:
 #    image: prom/prometheus 
 #    container_name: prometheus
 #    ports:
-#      - 127.0.0.1:9090:9090
+#      - "127.0.0.1:9090:9090"
 
 #  grafana:
 #    image: grafana/grafana
 #    container_name: grafana
 #    ports:
-#      - 3000:3000
+#      - "127.0.0.1:3000:3000"
 
 #  elastic:
 #    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
@@ -41,36 +41,54 @@ services:
 #        soft: -1
 #        hard: -1
 #    ports:
-#      - 9200:9200
+#      - "127.0.0.1:9200:9200"
 #    volumes:
 #      - data02:/usr/share/elasticsearch/data
+#
+#  kibana:
+#    image: kibana:7.12.1
+#    container_name: kibana
+#    environment:
+#      ELASTICSEARCH_URL: http://elastic:9200
+#      ELASTICSEARCH_HOSTS: http://elastic:9200
+#    depends_on:
+#      - elastic
+#    ports:
+#      - "127.0.0.1:5601:5601"
 
   nimbus:
-    image: storm
+    image: storm:2.3.0
     container_name: nimbus
     command: storm nimbus
     depends_on:
       - zookeeper
     restart: always
+    volumes:
+      - storm-nimbus-logs:/logs
 
   supervisor:
-    image: storm
+    image: storm:2.3.0
     container_name: supervisor
     command: storm supervisor -c worker.childopts=-Xmx%HEAP-MEM%m
     depends_on:
       - nimbus
       - zookeeper
     restart: always
+    volumes:
+      - storm-supervisor-data:/data
+      - storm-supervisor-logs:/logs
 
   ui:
-    image: storm
+    image: storm:2.3.0
     container_name: ui
     command: storm ui
     depends_on:
       - nimbus
     restart: always
     ports:
-      - 8080:8080
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - storm-ui-logs:/logs
 
   logviewer:
     image: storm
@@ -81,11 +99,20 @@ services:
       - supervisor
     restart: always
     ports:
-      - 8000:8000
+      - "127.0.0.1:8000:8000"
 
 volumes:
+  # URL-Frontier
   data01:
     driver: local
+  # Elasticsearch
   data02:
     driver: local
-
+  storm-ui-logs:
+    driver: local
+  storm-nimbus-logs:
+    driver: local
+  storm-supervisor-data:
+    driver: local
+  storm-supervisor-logs:
+    driver: local
