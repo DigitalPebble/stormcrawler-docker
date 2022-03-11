@@ -13,7 +13,7 @@ services:
 #    ports:
 #      - "127.0.0.1:7071:7071"
 #    volumes:
-#      - data01:/crawldir
+#      - frontier-data:/crawldir
 
 #  prometheus:
 #    image: prom/prometheus 
@@ -43,7 +43,7 @@ services:
 #    ports:
 #      - "127.0.0.1:9200:9200"
 #    volumes:
-#      - data02:/usr/share/elasticsearch/data
+#      - es-data:/usr/share/elasticsearch/data
 #
 #  kibana:
 #    image: kibana:7.12.1
@@ -55,6 +55,14 @@ services:
 #      - elastic
 #    ports:
 #      - "127.0.0.1:5601:5601"
+
+  builder:
+    image: digitalpebble/storm_maven:2.3.0
+    container_name: builder
+    depends_on:
+      - nimbus
+    volumes:
+      - "./crawldata:/crawldata"
 
   nimbus:
     image: storm:2.3.0
@@ -91,7 +99,7 @@ services:
       - storm-ui-logs:/logs
 
   logviewer:
-    image: storm
+    image: storm:2.3.0
     container_name: logviewer
     command: storm logviewer
     depends_on:
@@ -102,11 +110,9 @@ services:
       - "127.0.0.1:8000:8000"
 
 volumes:
-  # URL-Frontier
-  data01:
+  frontier-data:
     driver: local
-  # Elasticsearch
-  data02:
+  es-data:
     driver: local
   storm-ui-logs:
     driver: local
