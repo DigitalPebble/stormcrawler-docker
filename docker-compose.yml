@@ -6,14 +6,14 @@ services:
     container_name: zookeeper
     restart: always
 
-#  frontier:
-#    image: crawlercommons/url-frontier
-#    container_name: frontier
-#    command: rocksdb.path=/crawldir/rocksdb
-#    ports:
-#      - "127.0.0.1:7071:7071"
-#    volumes:
-#      - frontier-data:/crawldir
+  frontier:
+    image: crawlercommons/url-frontier
+    container_name: frontier
+    command: rocksdb.path=/crawldir/rocksdb
+    ports:
+      - "127.0.0.1:7071:7071"
+    volumes:
+      - /data/stormcrawler-docker:/crawldir
 
 #  prometheus:
 #    image: prom/prometheus 

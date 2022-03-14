@@ -19,11 +19,19 @@ Start the _builder_ container
 
 this is used to build a topology with Maven and send it to the Storm cluster
 
-Now that you are within the _builder_ container
+Now that you are within the _builder_ container, 
 
-`cd /crawldata && mvn archetype:generate -DarchetypeGroupId=com.digitalpebble.stormcrawler -DarchetypeArtifactId=storm-crawler-archetype -DarchetypeVersion=2.2 -DartifactId=crawler -DgroupId=com.digitalpebble -Dversion=1.0`
+```
+alias mvn="mvn -Dmaven.repo.local=/crawldata/.repository"
+cd /crawldata 
+mvn archetype:generate -DarchetypeGroupId=com.digitalpebble.stormcrawler -DarchetypeArtifactId=storm-crawler-archetype -DarchetypeVersion=2.2 -DartifactId=crawler -DgroupId=com.digitalpebble -Dversion=1.0
+```
 
 then press Enter to confirm the parameters.
+
+You can change the access rights for the _crawler_ directory so that its content can be modified from outside the container.
+
+`chmod a+rw -R crawler`
 
 You should see a directory called _crawler_ in the _crawldata_ directory you created earlier on your machine. It contains the resources and code of the crawl topology. 
 
