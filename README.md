@@ -9,7 +9,7 @@ Resources for running StormCrawler with Docker services
 
 Make a directory with `mkdir crawldata`
 
-Build a custom Docker image to extend the one for Apache Storm with `docker build -t digitalpebble/storm_maven:2.3.0 .`
+Build a custom Docker image to extend the one for Apache Storm with `docker build -t digitalpebble/storm_maven:2.4.0 .`
 
 Start the services, run `docker-compose up -d`.
 

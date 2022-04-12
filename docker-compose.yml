@@ -28,7 +28,7 @@ services:
 #      - "127.0.0.1:3000:3000"
 
 #  elastic:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.2
 #    container_name: elastic
 #    environment:
 #      - node.name=elastic
@@ -46,7 +46,7 @@ services:
 #      - es-data:/usr/share/elasticsearch/data
 #
 #  kibana:
-#    image: kibana:7.12.1
+#    image: kibana:7.17.2
 #    container_name: kibana
 #    environment:
 #      ELASTICSEARCH_URL: http://elastic:9200
@@ -57,7 +57,7 @@ services:
 #      - "127.0.0.1:5601:5601"
 
   builder:
-    image: digitalpebble/storm_maven:2.3.0
+    image: digitalpebble/storm_maven:2.4.0
     container_name: builder
     depends_on:
       - nimbus
@@ -65,7 +65,7 @@ services:
       - "./crawldata:/crawldata"
 
   nimbus:
-    image: storm:2.3.0
+    image: storm:2.4.0
     container_name: nimbus
     command: storm nimbus
     depends_on:
@@ -75,7 +75,7 @@ services:
       - storm-nimbus-logs:/logs
 
   supervisor:
-    image: storm:2.3.0
+    image: storm:2.4.0
     container_name: supervisor
     command: storm supervisor -c worker.childopts=-Xmx%HEAP-MEM%m
     depends_on:
@@ -86,7 +86,7 @@ services:
       - storm-supervisor-logs:/logs
 
   ui:
-    image: storm:2.3.0
+    image: storm:2.4.0
     container_name: ui
     command: storm ui
     depends_on:
@@ -101,7 +101,7 @@ services:
 # see https://issues.apache.org/jira/browse/STORM-1759
 
 #  logviewer:
-#    image: storm:2.3.0
+#    image: storm:2.4.0
 #    container_name: logviewer
 #    command: storm logviewer
 #    depends_on:
