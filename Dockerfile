@@ -1,4 +1,4 @@
-FROM storm:2.4-temurin
+FROM storm:2.5
 
 # Install maven
 RUN apt-get update \
