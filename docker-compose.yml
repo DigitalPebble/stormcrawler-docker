@@ -7,7 +7,7 @@ services:
     restart: always
 
   nimbus:
-    image: storm:2.5
+    image: storm:2.6
     container_name: nimbus
     command: storm nimbus
     depends_on:
@@ -17,7 +17,7 @@ services:
       - storm-nimbus-logs:/logs
 
   supervisor:
-    image: storm:2.5
+    image: storm:2.6
     container_name: supervisor
     command: storm supervisor -c worker.childopts=-Xmx%HEAP-MEM%m
     depends_on:
@@ -28,7 +28,7 @@ services:
       - storm-supervisor-logs:/logs
 
   ui:
-    image: storm:2.5
+    image: storm:2.6
     container_name: ui
     command: storm ui
     depends_on:
@@ -40,7 +40,7 @@ services:
       - storm-ui-logs:/logs
 
   runner:
-    image: digitalpebble/storm_maven:2.5
+    image: digitalpebble/storm_maven:2.6
     container_name: runner
     depends_on:
       - nimbus

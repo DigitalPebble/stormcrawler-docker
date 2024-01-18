@@ -1,4 +1,4 @@
-FROM storm:2.5
+FROM storm:2.6
 
 # Install maven
 RUN apt-get update \
