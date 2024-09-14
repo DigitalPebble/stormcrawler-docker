@@ -1,10 +1,12 @@
-version: '3.1'
-
 services:
   zookeeper:
-    image: zookeeper:3.7.0
+    image: zookeeper:3.9.2
     container_name: zookeeper
     restart: always
+    volumes:
+      - zk-logs:/logs
+      - zk-data:/data
+      - zk-datalog:/datalog
 
   nimbus:
     image: storm:2.6
@@ -71,9 +73,11 @@ services:
       - ./frontier:/crawldir
 
 volumes:
+  opensearch-data1:
+  opensearch-data2:
   storm-ui-logs:
-    driver: local
   storm-nimbus-logs:
-    driver: local
   storm-supervisor-logs:
-    driver: local
+  zk-logs:
+  zk-data:
+  zk-datalog:
