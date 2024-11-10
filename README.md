@@ -11,7 +11,7 @@ This project does not cover the basics of StormCrawler. If you need to understan
 - Docker-compose
 - (optional) Apache Maven
 
-First, you will need to build a custom Docker image to extend the one for Apache Storm with `docker build -t digitalpebble/storm_maven:2.6 .`. This will make it easier for you to launch the crawler using the containers.
+First, you will need to build a custom Docker image to extend the one for Apache Storm with `docker build -t digitalpebble/storm_maven:2.7.0 .`. This will make it easier for you to launch the crawler using the containers.
 
 Create a directory 'frontier' in the current directory with `mkdir -m 777 frontier`.
 
@@ -36,7 +36,7 @@ Finally, start the services with `docker-compose up -d`.
 
 ---
 
-*** IF YOU ARE DON'T HAVE A STORMCRAWLER SETUP AND NEITHER MAVEN NOR JAVA'***
+*** IF YOU DON'T HAVE A STORMCRAWLER SETUP AND USE NEITHER MAVEN NOR JAVA'***
 
 *IMPORTANT* Make sure you give +rw access to any user on the _crawldata_ directory, this is done with `chmod -R a+rw crawldata`; otherwise the container won't be able to create any content in it.
 
